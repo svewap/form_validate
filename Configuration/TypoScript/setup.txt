@@ -1,0 +1,58 @@
+plugin.tx_form {
+
+	settings {
+		yamlConfigurations {
+			90 = EXT:form_validate/Configuration/Yaml/BaseSetup.yaml
+		}
+	}
+
+
+}
+
+
+
+page.includeJSFooter {
+
+
+	formvalidate = EXT:form_validate/Resources/Public/JavaScript/Helper.js
+	formvalidator = EXT:form_validate/Resources/Public/JavaScript/Validator.js
+
+}
+
+
+ajaxformvalidation = PAGE
+ajaxformvalidation {
+	config {
+		disableAllHeaderCode = 1
+		debug = 0
+		no_cache = 1
+		admPanel = 0
+		additionalHeaders {
+			10 {
+				header = Content-Type: application/json
+				replace = 1
+			}
+		}
+	}
+	typeNum = 132232
+
+
+	11 = USER
+	11 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = FormValidate
+		pluginName = Ajax
+		vendorName = WapplerSystems
+
+		controller = Form
+		action = render
+
+		format = json
+
+		//settings < plugin.tx_form.settings
+		//persistence < plugin.tx_form.persistence
+		//view < plugin.tx_form.view
+	}
+
+
+}
