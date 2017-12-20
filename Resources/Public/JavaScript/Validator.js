@@ -17,7 +17,7 @@
                 }, 1000 );
             }).keypress(function(el) {
 
-                $(el.currentTarget).removeClass('is-invalid').next('.invalid-feedback').remove();
+                //$(el.currentTarget).next('.invalid-feedback').slideUp('normal', function() { $(this).prev().removeClass('is-invalid'); $(this).remove(); } );
 
             }).focusout(function(el) {
                 sendValidationRequest($this,$(el.currentTarget));
@@ -43,21 +43,30 @@
                 data: form.serialize()+'&cid='+form.parent().attr('id').slice(1),
                 success: function(data) {
 
-                    target.removeClass('is-invalid').next('.invalid-feedback').remove();
+                    var errorFound = false;
 
                     $.each( data, function( identifier, errors ) {
 
-                        if (form.attr('id')+'-'+identifier !== target.attr('id')) return;
+                        if (form.attr('id') + '-' + identifier !== target.attr('id')) return;
 
-                        $.each(errors, function(key, error) {
-                            //console.debug(error.message);
+                        if (errors[0] !== undefined) {
+                            errorFound = true;
+                        }
 
-                            $('#'+form.attr('id')+'-'+identifier).addClass('is-invalid').after($('<div/>').addClass('invalid-feedback').html(error.message));
+                        if (errors[0] !== undefined && $('#' + form.attr('id') + '-' + identifier).next('div[data-code="' + errors[0].code + '"]').length === 0) {
+                            // new error
+                            $('<div/>').attr('data-code', errors[0].code).addClass('invalid-feedback').html(errors[0].message).css('display', 'none').insertAfter($('#' + form.attr('id') + '-' + identifier).removeClass('is-valid').addClass('is-invalid')).slideDown();
 
-                        });
+                            errorFound = true;
+                        }
+
+                        // remove all other error messages
+                        $('div[data-code!="' + errors[0].code + '"]',target.parent()).slideUp('normal', function() { $(this).remove(); } );
                     });
 
-                    if (!target.hasClass('is-invalid')) target.addClass('is-valid');
+                    if (!errorFound) {
+                        target.addClass('is-valid').removeClass('is-invalid').next('.invalid-feedback').slideUp('normal', function() { $(this).remove(); } );
+                    }
                 }
             });
 
