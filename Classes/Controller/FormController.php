@@ -5,8 +5,6 @@ namespace WapplerSystems\FormValidate\Controller;
 
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Compatibility6\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
@@ -14,7 +12,7 @@ use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
-use TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor;
+
 
 class FormController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
