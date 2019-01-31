@@ -36,9 +36,6 @@ class FormController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function ajaxAction()
     {
 
-        $arguments = GeneralUtility::_GP('tx_form_formframework');
-        $this->request->setArguments($arguments);
-
 
         $data = BackendUtility::getRecord('tt_content',(int)GeneralUtility::_GP('cid'),'pi_flexform');
 
@@ -48,6 +45,14 @@ class FormController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $formDefinitionArray = $this->formPersistenceManager->load($ffContent['settings']['persistenceIdentifier']);
 
+
+        $arguments = GeneralUtility::_GP('tx_form_formframework');
+        
+        if(is_array($arguments[$formDefinitionArray['identifier'] . '-' . (int)GeneralUtility::_GP('cid')])) {
+            $arguments = $arguments[$formDefinitionArray['identifier'] . '-' . (int)GeneralUtility::_GP('cid')];
+        }
+        
+        $this->request->setArguments($arguments);
 
 
         $prototypeName = isset($overrideConfiguration['prototypeName']) ? $formDefinitionArray['prototypeName'] : 'standard';
