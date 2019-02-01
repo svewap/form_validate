@@ -78,6 +78,9 @@ class FormController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
          * @var array $errorsOfField
          */
         foreach ($errors as $identifier => $errorsOfField) {
+            
+            $identifier = str_replace($formDefinitionArray['identifier'] . '.', '', $identifier);
+            
             /** @var Error $error */
             foreach ($errorsOfField as $error) {
                 $t = [];
